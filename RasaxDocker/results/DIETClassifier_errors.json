@@ -1,0 +1,135 @@
+[
+  {
+    "text": "hey",
+    "entities": [],
+    "predicted_entities": [
+      {
+        "entity": "hey{2,}",
+        "start": 0,
+        "end": 3,
+        "confidence_entity": 0.6748788952827454,
+        "value": "hey",
+        "extractor": "DIETClassifier",
+        "processors": [
+          "EntitySynonymMapper"
+        ]
+      }
+    ]
+  },
+  {
+    "text": "hi",
+    "entities": [],
+    "predicted_entities": [
+      {
+        "entity": "hi{2,}",
+        "start": 0,
+        "end": 2,
+        "confidence_entity": 0.6753759384155273,
+        "value": "hi",
+        "extractor": "DIETClassifier",
+        "processors": [
+          "EntitySynonymMapper"
+        ]
+      }
+    ]
+  },
+  {
+    "text": "goodevening",
+    "entities": [],
+    "predicted_entities": [
+      {
+        "entity": "selected_value",
+        "start": 0,
+        "end": 11,
+        "confidence_entity": 0.5428596138954163,
+        "value": "goodevening",
+        "extractor": "DIETClassifier"
+      }
+    ]
+  },
+  {
+    "text": "all",
+    "entities": [],
+    "predicted_entities": [
+      {
+        "entity": "all{2,}",
+        "start": 0,
+        "end": 3,
+        "confidence_entity": 0.5441686511039734,
+        "value": "all",
+        "extractor": "DIETClassifier",
+        "processors": [
+          "EntitySynonymMapper"
+        ]
+      }
+    ]
+  },
+  {
+    "text": "yes",
+    "entities": [],
+    "predicted_entities": [
+      {
+        "entity": "yes{2,}",
+        "start": 0,
+        "end": 3,
+        "confidence_entity": 0.6438958048820496,
+        "value": "yes",
+        "extractor": "DIETClassifier",
+        "processors": [
+          "EntitySynonymMapper"
+        ]
+      }
+    ]
+  },
+  {
+    "text": "sure",
+    "entities": [],
+    "predicted_entities": [
+      {
+        "entity": "sure{2,}",
+        "start": 0,
+        "end": 4,
+        "confidence_entity": 0.5579970479011536,
+        "value": "sure",
+        "extractor": "DIETClassifier",
+        "processors": [
+          "EntitySynonymMapper"
+        ]
+      }
+    ]
+  },
+  {
+    "text": "never",
+    "entities": [],
+    "predicted_entities": [
+      {
+        "entity": "never{2,}",
+        "start": 0,
+        "end": 5,
+        "confidence_entity": 0.5766841173171997,
+        "value": "never",
+        "extractor": "DIETClassifier",
+        "processors": [
+          "EntitySynonymMapper"
+        ]
+      }
+    ]
+  },
+  {
+    "text": "dont",
+    "entities": [],
+    "predicted_entities": [
+      {
+        "entity": "dont{2,}",
+        "start": 0,
+        "end": 4,
+        "confidence_entity": 0.6569139957427979,
+        "value": "dont",
+        "extractor": "DIETClassifier",
+        "processors": [
+          "EntitySynonymMapper"
+        ]
+      }
+    ]
+  }
+]

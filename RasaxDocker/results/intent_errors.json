@@ -1,0 +1,10 @@
+[
+  {
+    "text": "goodevening",
+    "intent": "greet",
+    "intent_prediction": {
+      "name": "intent_create_plot",
+      "confidence": 0.5685140490531921
+    }
+  }
+]

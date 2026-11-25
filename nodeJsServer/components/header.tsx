@@ -15,6 +15,11 @@ const tabs = [
         text: "Chatbot",
         link: "/dashboard/chat",
         icon: <ChatbotIcon className="fill-primary" width={28} height={28} />
+    },
+    {
+        text: "Custom",
+        link: "/dashboard/custom",
+        icon: <DashboardIcon className="fill-primary" width={28} height={28} />
     }
 ];
 

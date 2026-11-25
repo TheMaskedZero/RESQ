@@ -1,0 +1,35 @@
+{
+  "selected_value": {
+    "precision": 0.9979838709677419,
+    "recall": 1.0,
+    "f1-score": 0.9989909182643794,
+    "support": 495,
+    "confused_with": {}
+  },
+  "plot_type": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1-score": 1.0,
+    "support": 23,
+    "confused_with": {}
+  },
+  "micro avg": {
+    "precision": 0.9980732177263969,
+    "recall": 1.0,
+    "f1-score": 0.9990356798457087,
+    "support": 518
+  },
+  "macro avg": {
+    "precision": 0.998991935483871,
+    "recall": 1.0,
+    "f1-score": 0.9994954591321896,
+    "support": 518
+  },
+  "weighted avg": {
+    "precision": 0.9980733902104869,
+    "recall": 1.0,
+    "f1-score": 0.9990357230518682,
+    "support": 518
+  },
+  "accuracy": 0.9908350305498982
+}

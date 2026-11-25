@@ -1,0 +1,100 @@
+{
+  "both": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1-score": 1.0,
+    "support": 12,
+    "confused_with": {}
+  },
+  "intent_guideline": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1-score": 1.0,
+    "support": 5,
+    "confused_with": {}
+  },
+  "intent_create_plot": {
+    "precision": 0.9943502824858758,
+    "recall": 1.0,
+    "f1-score": 0.9971671388101983,
+    "support": 176,
+    "confused_with": {}
+  },
+  "reject": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1-score": 1.0,
+    "support": 5,
+    "confused_with": {}
+  },
+  "intent_shownatvalue": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1-score": 1.0,
+    "support": 5,
+    "confused_with": {}
+  },
+  "goodbye": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1-score": 1.0,
+    "support": 10,
+    "confused_with": {}
+  },
+  "intent_askpredictors": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1-score": 1.0,
+    "support": 17,
+    "confused_with": {}
+  },
+  "intent_askeffects": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1-score": 1.0,
+    "support": 7,
+    "confused_with": {}
+  },
+  "affirm": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1-score": 1.0,
+    "support": 9,
+    "confused_with": {}
+  },
+  "intent_askttest": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1-score": 1.0,
+    "support": 16,
+    "confused_with": {}
+  },
+  "greet": {
+    "precision": 1.0,
+    "recall": 0.9230769230769231,
+    "f1-score": 0.9600000000000001,
+    "support": 13,
+    "confused_with": {
+      "intent_create_plot": 1
+    }
+  },
+  "accuracy": 0.9963636363636363,
+  "macro avg": {
+    "precision": 0.9994863893168978,
+    "recall": 0.993006993006993,
+    "f1-score": 0.9961061035282,
+    "support": 275
+  },
+  "weighted avg": {
+    "precision": 0.9963841807909605,
+    "recall": 0.9963636363636363,
+    "f1-score": 0.9962960597476178,
+    "support": 275
+  },
+  "micro avg": {
+    "precision": 0.9963636363636363,
+    "recall": 0.9963636363636363,
+    "f1-score": 0.9963636363636363,
+    "support": 275
+  }
+}

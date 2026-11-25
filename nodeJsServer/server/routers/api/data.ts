@@ -134,6 +134,136 @@ const supportedDataOperations: Record<string, string[]> = {
 const dataApi = express.Router();
 
 /**
+ * Anomaly Drill-Down API
+ * Compares data between a baseline YQ range and an anomaly YQ range.
+ */
+dataApi.post("/compare", async (req, res) => {
+    try {
+        const { baseline, anomaly, filters, variablesToTest = [] } = req.body;
+        const allData = await getDataFromFile();
+
+        // Apply the global dashboard filters
+        let filteredData = allData;
+        if (filters?.country) {
+            filteredData = filteredData.filter(d => d.site_country === filters.country);
+        }
+        if (filters?.site) {
+            filteredData = filteredData.filter(d => d.site_id === filters.site);
+        }
+
+        // Separate into Baseline and Anomaly groups based on the YQ strings
+        const baselineData = filteredData.filter(d => d.YQ >= baseline[0] && d.YQ <= baseline[1]);
+        const anomalyData = filteredData.filter(d => {
+            const inAnomaly = d.YQ >= anomaly[0] && d.YQ <= anomaly[1];
+            const inBaseline = d.YQ >= baseline[0] && d.YQ <= baseline[1];
+            return inAnomaly && !inBaseline;
+        });
+
+        function tTest(sample1: number[], sample2: number[]): number {
+            if (sample1.length < 2 || sample2.length < 2) return 1;
+            const mean = (arr: number[]) => arr.reduce((a, b) => a + b, 0) / arr.length;
+            const variance = (arr: number[], m: number) => arr.reduce((a, b) => a + Math.pow(b - m, 2), 0) / (arr.length - 1);
+
+            const mean1 = mean(sample1);
+            const mean2 = mean(sample2);
+            const var1 = variance(sample1, mean1);
+            const var2 = variance(sample2, mean2);
+            const n1 = sample1.length;
+            const n2 = sample2.length;
+
+            const t = (mean1 - mean2) / Math.sqrt(var1 / n1 + var2 / n2);
+            const df = Math.pow(var1 / n1 + var2 / n2, 2) /
+                ((Math.pow(var1 / n1, 2) / (n1 - 1)) + (Math.pow(var2 / n2, 2) / (n2 - 1)));
+
+            return 2 * (1 - jStat.studentt.cdf(Math.abs(t), df));
+        }
+
+        function chiSquareTest(sample1: string[], sample2: string[]): number | null {
+            const n1 = sample1.length;
+            const n2 = sample2.length;
+            const total = n1 + n2;
+
+            if (n1 === 0 || n2 === 0) return null;
+
+            // Find all unique categories across both periods
+            const categories = Array.from(new Set([...sample1, ...sample2]));
+            
+            // Need at least 2 categories to compare distributions
+            if (categories.length < 2) return null;
+
+            // Count occurrences of each category in Baseline and Anomaly
+            const counts1: Record<string, number> = {};
+            const counts2: Record<string, number> = {};
+            for (const val of sample1) counts1[val] = (counts1[val] || 0) + 1;
+            for (const val of sample2) counts2[val] = (counts2[val] || 0) + 1;
+
+            // Calculate Chi-Square statistic
+            let chi2 = 0;
+            for (const cat of categories) {
+                const obs1 = counts1[cat] || 0;
+                const obs2 = counts2[cat] || 0;
+                const colTotal = obs1 + obs2;
+
+                const exp1 = (n1 * colTotal) / total;
+                const exp2 = (n2 * colTotal) / total;
+
+                if (exp1 > 0) chi2 += Math.pow(obs1 - exp1, 2) / exp1;
+                if (exp2 > 0) chi2 += Math.pow(obs2 - exp2, 2) / exp2;
+            }
+
+            // Degrees of freedom = (rows - 1) * (cols - 1) = 1 * (categories - 1)
+            const df = categories.length - 1;
+            return 1 - jStat.chisquare.cdf(chi2, df);
+        }
+
+        const results = [];
+
+        // Calculate the p-value for each variable
+        for (const variable of variablesToTest) {
+            const baseRows = baselineData.filter(
+                d => d.variable.toLowerCase() === variable.variableName.toLowerCase() && d.Value !== ""
+            );
+            const anomRows = anomalyData.filter(
+                d => d.variable.toLowerCase() === variable.variableName.toLowerCase() && d.Value !== ""
+            );
+
+            let pValue: number | null = null;
+
+            if (variable.variableType === "quantitative") {
+                const baseValues = baseRows.map(d => Number(d.Value)).filter(v => !isNaN(v));
+                const anomValues = anomRows.map(d => Number(d.Value)).filter(v => !isNaN(v));
+
+                if (baseValues.length < 2 || anomValues.length < 2) continue;
+                pValue = tTest(baseValues, anomValues);
+            } else if (variable.variableType === "categorical" || variable.variableType === "categorical_binary") {
+                const baseValues = baseRows.map(d => d.Value.trim());
+                const anomValues = anomRows.map(d => d.Value.trim());
+
+                if (baseValues.length < 2 || anomValues.length < 2) continue;
+                pValue = chiSquareTest(baseValues, anomValues);
+            }
+
+            if (pValue !== null && !isNaN(pValue)) {
+                results.push({
+                    variable: variable.label,
+                    variableName: variable.variableName,
+                    pValue: pValue
+                });
+            }
+        }
+
+        // 5. Sort by lowest p-value so the biggest anomalies jump to the top!
+        results.sort((a, b) => a.pValue - b.pValue);
+        
+        return res.json(results);
+
+    } catch (error) {
+        console.error("Comparison API Error:", error);
+        return res.status(500).json({ error: "Failed to run statistical comparison" });
+    }
+});
+
+/**
  * Handles POST requests for data aggregation.
  * Performs validation, filtering, and aggregation of the requested data.
  */
